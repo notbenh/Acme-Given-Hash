@@ -1,0 +1,49 @@
+=head1 NAME 
+
+Acme::Given::Hash - you like given but it's too much typing.
+
+=head1 SYNOPSIS
+
+  use Acme::Given::Hash;
+  my $result = $given ~~ gvn { $value1 => $scalar
+                             , $value2 => do { ... }
+                             , $value3 => sub{ ... }
+                             };
+
+  # is going to result in the same thing as: 
+  given($given) {
+    when ($value1) { $result = $scalar }
+    when ($value2) { $result = do{ ... }}
+    when ($value3) { $result = sub{...}->() }
+  };
+
+=head1 EXPORTED FUNCTIONS
+
+=head2 gvn
+
+  my $given_hash_obj = gvn {...}; 
+
+This is really just a simple constructor that blesses the given hashref to an object where ~~ is overridden as to trip the value of the hash rather then check to see if the key exists.
+
+=head1 TODO
+
+=head2 non-scalar matches
+
+Currently the expectation is that you are matching a scalar as one would expect for a given/switch statement, it's not a hard problem to deal with arrays. Though currently there is no need to do this, possibly in the future?
+
+=head1 AUTHORS
+
+NOTBENH <ben hengst> wrote this but it was heavly inspired by the team over at Puppet Labs as they have something like this.
+
+=head1 SOURCE
+
+All on Github: https://github.com/notbenh/Acme-Given-Hash
+
+=head1 BUGS
+
+Issues on Github: https://github.com/notbenh/Acme-Given-Hash/issues
+
+=head1 COPYRIGHT
+
+This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+See http://www.perl.com/perl/misc/Artistic.html
