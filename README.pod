@@ -8,13 +8,15 @@ Acme::Given::Hash - you like given but it's too much typing.
   my $result = $given ~~ gvn { $value1 => $scalar
                              , $value2 => do { ... }
                              , $value3 => sub{ ... }
-                             };
+                             } || $default ;
 
   # is going to result in the same thing as: 
+  my $result; 
   given($given) {
     when ($value1) { $result = $scalar }
     when ($value2) { $result = do{ ... }}
     when ($value3) { $result = sub{...}->() }
+    default        { $result = $default }
   };
 
 =head1 EXPORTED FUNCTIONS
