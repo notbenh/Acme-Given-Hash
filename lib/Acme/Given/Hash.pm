@@ -1,7 +1,7 @@
 package Acme::Given::Hash;
 use strict;
 use warnings;
-require 5.0010001;
+require 5.014;
 use Exporter qw{import};
 our @EXPORT = qw{gvn};
 
