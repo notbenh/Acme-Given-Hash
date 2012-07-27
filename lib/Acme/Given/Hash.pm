@@ -10,19 +10,57 @@ our @EXPORT = qw{gvn};
 
 sub gvn ($) {
   my $when = shift;
-  die 'gvn requires a hashref' unless ref($when) eq 'HASH';
-  return bless $when, 'Acme::Given::Hash::Object';
+  # old hashref notation 
+  if ( ref($when) eq 'HASH' ) {
+    return bless {exact => shift, calculate => []}, 'Acme::Given::Hash::Object';
+  }
+  # new arrayref notation 
+  elsif ( ref($when) eq 'ARRAY' ) {
+    my $input = natatime 2, @{ $_[0] };
+    my $self = {exact=>{}, calculate=>[]};
+    my $it = natatime 2, @_;
+    while (my @pairs = $it->()) {
+      if( ref($pairs[0]) eq '' ) {
+        $self->{exact}->{$pairs[0]} = $pairs[1];
+      }
+      else {
+        push @{ $self->{calculate} }, {match => $pairs[0], value => $pairs[1]};
+      }
+    }
+    return bless $self, 'Acme::Given::Hash::Object';
+  }
+  die 'gvn only takes hashrefs and arrayrefs, you have passed soemthing else';
 }
 
 package Acme::Given::Hash::Object;
 use strict;
 use warnings;
 
+
 use overload '~~' => sub{ 
+  my $ror = sub {
+    my $thing = shift;
+warn qq{ ROR: $thing};
+    return $thing->() if ref($thing) eq 'CODE';
+    return $thing;
+  };
   my ($self, $key) = @_;
-  return ref($self->{$key}) eq 'CODE' 
-       ? $self->{$key}->() 
-       : $self->{$key};
+  if( exists $self->{exact}->{$key} ){
+    return ref($self->{exact}->{$key}) eq 'CODE'
+         ?  $self->{exact}->{$key}->()
+         :  $self->{exact}->{$key} 
+         ;
+  }
+
+  foreach my $pair (@{ $self->{calculate} } ) {
+    if( $pair->{match} ~~ $key ) {
+      return ref($pair->{value}) eq 'CODE'
+           ?  $pair->{value}->{$key}->()
+           :  $pair->{value}->{$key} 
+           ;
+    }
+  }
+  return undef; # no matches found 
 };
 
 1;
