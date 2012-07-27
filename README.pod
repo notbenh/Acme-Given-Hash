@@ -19,23 +19,33 @@ Acme::Given::Hash - you like given but it's too much typing.
     default        { $result = $default }
   };
 
+
+  # if you use an arrayref you can do more complex matching
+  $result = $given ~~ gvn [ 'scalar' => 'still works, just like the hash'
+                          , qr{reg}  => [qw{also works}]
+                          , [1..5]   => 'works too'
+                          , {a=>b,c=>d} => 'same here'
+                          , gvn { foo => 'bar' } => 'also works but "bar" will be seen as a true value rather then the thing to match'
+                          ];
+
+
+
 =head1 EXPORTED FUNCTIONS
 
 =head2 gvn
 
-  my $given_hash_obj = gvn {...}; 
+  my $given_hash_obj  = gvn {...}; 
+  my $given_array_obj = gvn [...]; 
 
-This is really just a simple constructor that blesses the given hashref to an object where ~~ is overridden as to trip the value of the hash rather then check to see if the key exists.
+This is really just a simple constructor that blesses the given structure in to an object where ~~ is overridden as to trip the value of the structure.
 
 =head1 TODO
 
-=head2 non-scalar matches
-
-Currently the expectation is that you are matching a scalar as one would expect for a given/switch statement, it's not a hard problem to deal with arrays. Though currently there is no need to do this, possibly in the future?
+All on Github: https://github.com/notbenh/Acme-Given-Hash/issues
 
 =head1 AUTHORS
 
-NOTBENH <ben hengst> wrote this but it was heavly inspired by the team over at Puppet Labs as they have something like this.
+NOTBENH <ben hengst> wrote this but it was heavly inspired by the team over at Puppet Labs as they have something like this, Also I could not have done this with out the smart match op, thanks team perl.
 
 =head1 SOURCE
 
