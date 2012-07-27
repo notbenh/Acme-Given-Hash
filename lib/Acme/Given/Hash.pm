@@ -12,7 +12,7 @@ sub gvn ($) {
   my $when = shift;
   # old hashref notation 
   if ( ref($when) eq 'HASH' ) {
-    return bless {exact => shift, calculate => []}, 'Acme::Given::Hash::Object';
+    return bless {exact => $when, calculate => []}, 'Acme::Given::Hash::Object';
   }
   # new arrayref notation 
   elsif ( ref($when) eq 'ARRAY' ) {
@@ -36,14 +36,7 @@ package Acme::Given::Hash::Object;
 use strict;
 use warnings;
 
-
 use overload '~~' => sub{ 
-  my $ror = sub {
-    my $thing = shift;
-warn qq{ ROR: $thing};
-    return $thing->() if ref($thing) eq 'CODE';
-    return $thing;
-  };
   my ($self, $key) = @_;
   if( exists $self->{exact}->{$key} ){
     return ref($self->{exact}->{$key}) eq 'CODE'
