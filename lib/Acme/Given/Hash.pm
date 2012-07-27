@@ -5,6 +5,7 @@ require 5.014;
 use List::MoreUtils qw{natatime};
 use Exporter qw{import};
 our @EXPORT = qw{gvn};
+use Data::Dumper;
 
 #ABSTRACT: is given() too much typing for you?
 
@@ -18,7 +19,7 @@ sub gvn ($) {
   elsif ( ref($when) eq 'ARRAY' ) {
     my $input = natatime 2, @{ $_[0] };
     my $self = {exact=>{}, calculate=>[]};
-    my $it = natatime 2, @_;
+    my $it = natatime 2, @$when;
     while (my @pairs = $it->()) {
       if( ref($pairs[0]) eq '' ) {
         $self->{exact}->{$pairs[0]} = $pairs[1];

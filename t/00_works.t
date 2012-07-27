@@ -21,5 +21,5 @@ is 'that' ~~ gvn { moo  => 3 } || 'kitten' , 'kitten' , q{default};
 #---------------------------------------------------------------------------
 #  LIST NOTATION
 #---------------------------------------------------------------------------
-my $gvn = gvn that => 'this';
+my $gvn = gvn [ that => 'this'];
 is 'that' ~~ $gvn, 'this', 'list notation works!';
