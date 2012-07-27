@@ -20,14 +20,21 @@ is 'that' ~~ gvn { moo  => 3 } || 'kitten' , 'kitten' , q{default};
 
 #---------------------------------------------------------------------------
 #  LIST NOTATION
-#-----------------------------
+#---------------------------------------------------------------------------
+my $found = {foo=>bar=>};
 my $gvn = gvn [ that  => 'this'
               , qr{x} => 'found an x'
               , [1..5]=> 'one thru five'
+              , { foo => 1 , bar => 2 } => $found
+              , gvn { ruby => 'matz'
+                    , perl => 'lary'
+                    } => 'language'
               ];
-is 'that'       ~~ $gvn, 'this'          , 'list notation works!';
-is 'found an x' ~~ $gvn, 'found an x'    , 'list notation works!';
-is 3            ~~ $gvn, 'one thru five' , 'list notation works!';
+is 'that'       ~~ $gvn, 'this'          , 'list notation works with a scalar!';
+is 'found an x' ~~ $gvn, 'found an x'    , 'list notation works with a regex!';
+is 3            ~~ $gvn, 'one thru five' , 'list notation works with an aref!';
+is_deeply 'foo' ~~ $gvn, $found          , 'list notation works with a href!';
+is 'perl'       ~~ $gvn, 'language'      , 'list notation works with an object!';
 
 is 'kitten'     ~~ $gvn, undef           , 'list notation fails!';
 
