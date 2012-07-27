@@ -2,6 +2,7 @@ package Acme::Given::Hash;
 use strict;
 use warnings;
 require 5.014;
+use List::MoreUtils qw{natatime};
 use Exporter qw{import};
 our @EXPORT = qw{gvn};
 
