@@ -5,7 +5,6 @@ require 5.014;
 use List::MoreUtils qw{natatime};
 use Exporter qw{import};
 our @EXPORT = qw{gvn};
-use Data::Dumper;
 
 #ABSTRACT: is given() too much typing for you?
 
@@ -47,10 +46,16 @@ use overload '~~' => sub{
   }
 
   foreach my $pair (@{ $self->{calculate} } ) {
-    if( $pair->{match} ~~ $key ) {
+    my $match;
+    # 'string' ~~ [1..10] thows a warning, this disables this just for the check
+    { no warnings qw{numeric};
+      $match = $key ~~ $pair->{match};
+    }
+      
+    if( $match ){ 
       return ref($pair->{value}) eq 'CODE'
-           ?  $pair->{value}->{$key}->()
-           :  $pair->{value}->{$key} 
+           ?  $pair->{value}->()
+           :  $pair->{value} 
            ;
     }
   }
