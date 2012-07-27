@@ -17,7 +17,6 @@ is 'that' ~~ gvn { that => sub{3}} , 3     , q{works!};
 is 'that' ~~ gvn { moo  => 3 }     , undef , q{fails!};
 
 is 'that' ~~ gvn { moo  => 3 } || 'kitten' , 'kitten' , q{default};
-__END__
 
 #---------------------------------------------------------------------------
 #  LIST NOTATION
