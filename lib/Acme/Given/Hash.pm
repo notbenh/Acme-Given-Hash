@@ -10,11 +10,11 @@ our @EXPORT = qw{gvn};
 
 sub gvn ($) {
   my $when = shift;
-  # old hashref notation 
+  # old hashref notation
   if ( ref($when) eq 'HASH' ) {
     return bless {exact => $when, calculate => []}, 'Acme::Given::Hash::Object';
   }
-  # new arrayref notation 
+  # new arrayref notation
   elsif ( ref($when) eq 'ARRAY' ) {
     my $input = natatime 2, @{ $_[0] };
     my $self = {exact=>{}, calculate=>[]};
@@ -36,12 +36,12 @@ package Acme::Given::Hash::Object;
 use strict;
 use warnings;
 
-use overload '~~' => sub{ 
+use overload '~~' => sub{
   my ($self, $key) = @_;
   if( exists $self->{exact}->{$key} ){
     return ref($self->{exact}->{$key}) eq 'CODE'
          ?  $self->{exact}->{$key}->()
-         :  $self->{exact}->{$key} 
+         :  $self->{exact}->{$key}
          ;
   }
 
@@ -51,15 +51,15 @@ use overload '~~' => sub{
     { no warnings qw{numeric};
       $match = $key ~~ $pair->{match};
     }
-      
-    if( $match ){ 
+
+    if( $match ){
       return ref($pair->{value}) eq 'CODE'
            ?  $pair->{value}->()
-           :  $pair->{value} 
+           :  $pair->{value}
            ;
     }
   }
-  return undef; # no matches found 
+  return undef; # no matches found
 };
 
 1;
