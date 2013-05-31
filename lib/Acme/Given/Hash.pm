@@ -4,6 +4,8 @@ use warnings;
 require 5.014;
 use List::MoreUtils qw{natatime};
 use Exporter qw{import};
+use v5.10;
+no if $] >= 5.018, warnings => "experimental::smartmatch";
 our @EXPORT = qw{gvn};
 
 #ABSTRACT: is given() too much typing for you?
@@ -35,6 +37,8 @@ sub gvn ($) {
 package Acme::Given::Hash::Object;
 use strict;
 use warnings;
+use v5.10;
+no if $] >= 5.018, warnings => "experimental::smartmatch";
 
 use overload '~~' => sub{
   my ($self, $key) = @_;

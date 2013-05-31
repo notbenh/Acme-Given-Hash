@@ -1,6 +1,8 @@
 #!/usr/bin/env perl 
 use strict;
 use warnings;
+use v5.10;
+no if $] >= 5.018, warnings => "experimental::smartmatch";
 
 use Test::More qw{no_plan};
 
