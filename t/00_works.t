@@ -41,3 +41,13 @@ is 'perl'       ~~ $gvn, 'language'      , 'list notation works with an object!'
 is 'kitten'     ~~ $gvn, undef           , 'list notation fails!';
 
 is 'kitten' ~~ $gvn || 'puppy', 'puppy'  , 'list notation fails with default with || case!';
+
+#---------------------------------------------------------------------------
+#  scoring NOTATION
+#---------------------------------------------------------------------------
+my $score = gvn [ sub{$_ > 15} => 2
+                , sub{$_ < 10} => 1
+                ] ;
+is 20 ~~ $score || 0, 2, 'SCORE: upper';
+is 2  ~~ $score || 0, 1, 'SOCRE: lower';
+is 12 ~~ $score || 0, 0, 'SCORE: missing';

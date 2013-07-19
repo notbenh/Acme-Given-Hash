@@ -42,26 +42,30 @@ no if $] >= 5.018, warnings => "experimental::smartmatch";
 
 use overload '~~' => sub{
   my ($self, $key) = @_;
-  if( exists $self->{exact}->{$key} ){
-    return ref($self->{exact}->{$key}) eq 'CODE'
-         ?  $self->{exact}->{$key}->()
-         :  $self->{exact}->{$key}
-         ;
+
+  # in the case of a sub as a value execute with $key
+  sub RUN($){
+    my $ref = shift;
+    return ref($ref) eq 'CODE' ? $ref->($key) : $ref;
   }
 
+  # first check and see if we have an exact match
+  return RUN $self->{exact}->{$key} if exists $self->{exact}->{$key};
+
+  local $_ = $key; # allow match subs to just use $_;
   foreach my $pair (@{ $self->{calculate} } ) {
+
     my $match;
-    # 'string' ~~ [1..10] thows a warning, this disables this just for the check
+    # 'string' ~~ [1..10] throws a warning, this disables this just for the check
     { no warnings qw{numeric};
-      $match = $key ~~ $pair->{match};
+      # in the case of a sub as a key capture the return value
+      $match = ref($pair->{match}) eq 'CODE'
+             ? $pair->{match}->($key)
+             : $key ~~ $pair->{match}
+             ;
     }
 
-    if( $match ){
-      return ref($pair->{value}) eq 'CODE'
-           ?  $pair->{value}->()
-           :  $pair->{value}
-           ;
-    }
+    return RUN $pair->{value} if $match;
   }
   return undef; # no matches found
 };
