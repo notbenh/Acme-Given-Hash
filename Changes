@@ -1,13 +1,21 @@
-v0.001 
-  - make it work
-v0.002
-  - forgot to enfore 5.10 as a min 
-v0.03
-  - updated docs and test to show how to do a default
-v0.05
-  - update to turn off warnings for smartmatch in 5.18
-v.06
-  - adding subs as keys in [] syntax
-v0.07
+Revision history for perl module Acme::Given::Hash
+
+0.07 2013-07-18
   - drop dzil as getting it to play nice with TravisCI was more work
     then is strictly needed
+
+0.06 2013-07-18
+  - adding subs as keys in [] syntax
+
+0.05 2013-05-30
+  - update to turn off warnings for smartmatch in 5.18
+
+0.03 2012-01-25
+  - updated docs and test to show how to do a default
+
+0.002 2011-12-05
+  - forgot to enfore 5.10 as a min 
+
+0.001 2011-12-01
+  - make it work
+
