@@ -25,10 +25,9 @@ Acme::Given::Hash - you like given but it's too much typing.
                           , qr{reg}  => [qw{also works}]
                           , [1..5]   => 'works too'
                           , {a=>b,c=>d} => 'same here'
+                          , sub{$_>100} => 'for subs $_ is localized to the value of $given.'
                           , gvn { foo => 'bar' } => 'also works but "bar" will be seen as a true value rather then the thing to match'
                           ];
-
-
 
 =head1 EXPORTED FUNCTIONS
 
