@@ -24,6 +24,7 @@ my %module_build_args = (
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
+    "experimental" => 0.005,
     "Exporter" => 0,
     "List::MoreUtils" => "0.33",
     "Test::More" => "0.98",
